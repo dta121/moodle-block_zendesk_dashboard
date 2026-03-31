@@ -1,6 +1,9 @@
 <div class="block-zendesk-dashboard">
-    <div class="mb-3">
-        <a class="btn btn-primary btn-sm" href="{{newrequesturl}}">{{newrequestlabel}}</a>
+    <div class="mb-3 d-flex flex-wrap align-items-center">
+        <a class="btn btn-primary btn-sm mr-2 mb-2" href="{{newrequesturl}}">{{newrequestlabel}}</a>
+        {{#hashelpcenterlink}}
+        <a class="btn btn-outline-secondary btn-sm mb-2" href="{{helpcenterurl}}">{{helpcenterlabel}}</a>
+        {{/hashelpcenterlink}}
     </div>
 
     {{#requests}}

@@ -78,6 +78,7 @@ final class block_zendesk_dashboard extends block_base {
         }
 
         $service = new \local_zendesk\local\service\zendesk_service();
+        $ssoservice = new \local_zendesk\local\service\jwt_sso_service();
         if (!$service->is_enabled()) {
             $this->content->text = html_writer::div(get_string('zendeskdisabled', 'local_zendesk'), 'small text-muted');
             return $this->content;
@@ -89,9 +90,15 @@ final class block_zendesk_dashboard extends block_base {
         }
 
         $requests = $service->get_user_requests($USER->id, $service->get_dashboard_limit());
+        $hashelpcenterlink = has_capability('local/zendesk:usehelpcenter', $context)
+            && $ssoservice->is_enabled()
+            && $ssoservice->is_configured();
         $templatecontext = [
             'newrequesturl' => (new moodle_url('/local/zendesk/request.php'))->out(false),
             'newrequestlabel' => get_string('newrequest', 'local_zendesk'),
+            'hashelpcenterlink' => $hashelpcenterlink,
+            'helpcenterurl' => (new moodle_url('/local/zendesk/sso.php', ['target' => 'requests']))->out(false),
+            'helpcenterlabel' => $ssoservice->get_button_label(),
             'allrequestsurl' => (new moodle_url('/local/zendesk/index.php'))->out(false),
             'allrequestslabel' => get_string('allrequests', 'local_zendesk'),
             'emptylabel' => get_string('norequests', 'local_zendesk'),
