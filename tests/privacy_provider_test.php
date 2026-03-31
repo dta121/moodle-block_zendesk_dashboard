@@ -15,21 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version metadata.
+ * PHPUnit tests for the block privacy provider.
  *
  * @package    block_zendesk_dashboard
  * @copyright  2026 David Ta <david.ta@saylor.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_zendesk_dashboard;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_zendesk_dashboard';
-$plugin->version = 2026033102;
-$plugin->requires = 2024100700;
-$plugin->supported = [405, 405];
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.0';
-$plugin->dependencies = [
-    'local_zendesk' => 2026033102,
-];
+/**
+ * Tests for the dashboard block privacy provider.
+ *
+ * @package    block_zendesk_dashboard
+ * @copyright  2026 David Ta <david.ta@saylor.org>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+final class privacy_provider_test extends \advanced_testcase {
+    /**
+     * Test that the block declares itself as a null provider.
+     *
+     * @return void
+     */
+    public function test_get_reason_returns_privacy_string_identifier(): void {
+        $this->assertSame('privacy:metadata', \block_zendesk_dashboard\privacy\provider::get_reason());
+    }
+}

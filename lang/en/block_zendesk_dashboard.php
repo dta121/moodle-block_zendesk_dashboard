@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * English language strings for the block.
+ *
+ * @package    block_zendesk_dashboard
+ * @copyright  2026 David Ta <david.ta@saylor.org>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['pluginname'] = 'Zendesk support dashboard';
 $string['zendesk_dashboard:addinstance'] = 'Add a Zendesk support dashboard block';
 $string['zendesk_dashboard:myaddinstance'] = 'Add a Zendesk support dashboard block to the Dashboard';
+$string['privacy:metadata'] = 'The Zendesk support dashboard block does not store personal data. It only displays request data already managed by the local_zendesk plugin.';

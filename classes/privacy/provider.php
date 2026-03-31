@@ -15,21 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version metadata.
+ * Privacy subsystem implementation for block_zendesk_dashboard.
  *
  * @package    block_zendesk_dashboard
  * @copyright  2026 David Ta <david.ta@saylor.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_zendesk_dashboard\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_zendesk_dashboard';
-$plugin->version = 2026033102;
-$plugin->requires = 2024100700;
-$plugin->supported = [405, 405];
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.0';
-$plugin->dependencies = [
-    'local_zendesk' => 2026033102,
-];
+/**
+ * Privacy subsystem implementation for block_zendesk_dashboard.
+ *
+ * @package    block_zendesk_dashboard
+ * @copyright  2026 David Ta <david.ta@saylor.org>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+final class provider implements \core_privacy\local\metadata\null_provider {
+    /**
+     * Explain why this block stores no personal data of its own.
+     *
+     * @return string
+     */
+    public static function get_reason(): string {
+        return 'privacy:metadata';
+    }
+}
