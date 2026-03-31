@@ -1,0 +1,25 @@
+<div class="block-zendesk-dashboard">
+    <div class="mb-3">
+        <a class="btn btn-primary btn-sm" href="{{newrequesturl}}">{{newrequestlabel}}</a>
+    </div>
+
+    {{#requests}}
+    <div class="mb-3 pb-2 border-bottom">
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="mr-2">
+                <a href="{{viewurl}}">{{subject}}</a>
+            </div>
+            <span class="{{statusclass}}">{{statuslabel}}</span>
+        </div>
+        <div class="small text-muted mt-1">{{timemodifiedhuman}}</div>
+    </div>
+    {{/requests}}
+
+    {{^requests}}
+    <div class="small text-muted">{{emptylabel}}</div>
+    {{/requests}}
+
+    <div class="mt-3">
+        <a href="{{allrequestsurl}}">{{allrequestslabel}}</a>
+    </div>
+</div>
