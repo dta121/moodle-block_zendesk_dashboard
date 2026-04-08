@@ -7,30 +7,57 @@
 }}
 
 <div class="block-zendesk-dashboard">
-    <div class="mb-3 d-flex flex-wrap align-items-center">
-        <a class="btn btn-primary btn-sm mr-2 mb-2" href="{{newrequesturl}}">{{newrequestlabel}}</a>
-        {{#hashelpcenterlink}}
-        <a class="btn btn-outline-secondary btn-sm mb-2" href="{{helpcenterurl}}">{{helpcenterlabel}}</a>
-        {{/hashelpcenterlink}}
-    </div>
-
-    {{#requests}}
-    <div class="mb-3 pb-2 border-bottom">
-        <div class="d-flex justify-content-between align-items-start">
-            <div class="mr-2">
-                <a href="{{viewurl}}">{{subject}}</a>
-            </div>
-            <span class="{{statusclass}}">{{statuslabel}}</span>
+    <div class="block-zendesk-dashboard__panel">
+        <div class="block-zendesk-dashboard__intro">
+            <p class="block-zendesk-dashboard__summary">{{dashboardintro}}</p>
         </div>
-        <div class="small text-muted mt-1">{{timemodifiedhuman}}</div>
-    </div>
-    {{/requests}}
 
-    {{^requests}}
-    <div class="small text-muted">{{emptylabel}}</div>
-    {{/requests}}
+        <div class="block-zendesk-dashboard__actions">
+            <a class="block-zendesk-dashboard__action block-zendesk-dashboard__action--primary" href="{{newrequesturl}}">
+                <span class="block-zendesk-dashboard__action-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
+                </span>
+                <span>{{newrequestlabel}}</span>
+            </a>
+            {{#hashelpcenterlink}}
+            <a class="block-zendesk-dashboard__action block-zendesk-dashboard__action--secondary" href="{{helpcenterurl}}">
+                <span class="block-zendesk-dashboard__action-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 4v4M12 16v4M4 12h4M16 12h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+                    </svg>
+                </span>
+                <span>{{helpcenterlabel}}</span>
+            </a>
+            {{/hashelpcenterlink}}
+        </div>
 
-    <div class="mt-3">
-        <a href="{{allrequestsurl}}">{{allrequestslabel}}</a>
+        <div class="block-zendesk-dashboard__section-head">
+            <div class="block-zendesk-dashboard__section-title">{{recentrequestslabel}}</div>
+            <a class="block-zendesk-dashboard__all-link" href="{{allrequestsurl}}">{{allrequestslabel}}</a>
+        </div>
+
+        {{#hasrequests}}
+        <div class="block-zendesk-dashboard__list">
+            {{#requests}}
+            <article class="block-zendesk-dashboard__ticket">
+                <div class="block-zendesk-dashboard__ticket-head">
+                    <a class="block-zendesk-dashboard__ticket-title" href="{{viewurl}}">{{subject}}</a>
+                    <span class="{{statuspillclass}}">{{statuslabel}}</span>
+                </div>
+                {{#hascourse}}
+                <div class="block-zendesk-dashboard__ticket-context">{{coursefullname}}</div>
+                {{/hascourse}}
+                <div class="block-zendesk-dashboard__ticket-meta">{{timemodifiedhuman}}</div>
+            </article>
+            {{/requests}}
+        </div>
+        {{/hasrequests}}
+
+        {{^hasrequests}}
+        <div class="block-zendesk-dashboard__empty">{{emptylabel}}</div>
+        {{/hasrequests}}
     </div>
 </div>

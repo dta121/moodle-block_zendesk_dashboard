@@ -25,4 +25,6 @@
 $string['pluginname'] = 'Zendesk support dashboard';
 $string['zendesk_dashboard:addinstance'] = 'Add a Zendesk support dashboard block';
 $string['zendesk_dashboard:myaddinstance'] = 'Add a Zendesk support dashboard block to the Dashboard';
+$string['dashboardintro'] = 'Create a new request or review your latest support updates.';
 $string['privacy:metadata'] = 'The Zendesk support dashboard block does not store personal data. It only displays request data already managed by the local_zendesk plugin.';
+$string['recentrequests'] = 'Recent requests';

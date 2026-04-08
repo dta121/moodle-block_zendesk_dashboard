@@ -97,11 +97,13 @@ final class block_zendesk_dashboard extends block_base {
             return $this->content;
         }
 
-        $requests = $service->get_user_requests($USER->id, $service->get_dashboard_limit());
+        $requests = $this->decorate_requests($service->get_user_requests($USER->id, $service->get_dashboard_limit()));
         $hashelpcenterlink = has_capability('local/zendesk:usehelpcenter', $context)
             && $ssoservice->is_enabled()
             && $ssoservice->is_configured();
         $templatecontext = [
+            'dashboardintro' => get_string('dashboardintro', 'block_zendesk_dashboard'),
+            'recentrequestslabel' => get_string('recentrequests', 'block_zendesk_dashboard'),
             'newrequesturl' => (new moodle_url('/local/zendesk/request.php'))->out(false),
             'newrequestlabel' => get_string('newrequest', 'local_zendesk'),
             'hashelpcenterlink' => $hashelpcenterlink,
@@ -110,10 +112,68 @@ final class block_zendesk_dashboard extends block_base {
             'allrequestsurl' => (new moodle_url('/local/zendesk/index.php'))->out(false),
             'allrequestslabel' => get_string('allrequests', 'local_zendesk'),
             'emptylabel' => get_string('norequests', 'local_zendesk'),
+            'hasrequests' => !empty($requests),
             'requests' => $requests,
         ];
 
         $this->content->text = $OUTPUT->render_from_template('block_zendesk_dashboard/content', $templatecontext);
         return $this->content;
+    }
+
+    /**
+     * Add block-specific presentation metadata to request rows.
+     *
+     * @param array $requests Raw request rows from local_zendesk.
+     * @return array
+     */
+    private function decorate_requests(array $requests): array {
+        $decorated = [];
+
+        foreach ($requests as $request) {
+            $request['statuspillclass'] = 'block-zendesk-dashboard__status '
+                . 'block-zendesk-dashboard__status--' . $this->get_status_modifier($request);
+            $decorated[] = $request;
+        }
+
+        return $decorated;
+    }
+
+    /**
+     * Resolve the semantic status modifier for a request pill.
+     *
+     * @param array $request Request display data.
+     * @return string
+     */
+    private function get_status_modifier(array $request): string {
+        $syncstate = strtolower((string) ($request['syncstate'] ?? ''));
+        $statusraw = strtolower((string) ($request['statusraw'] ?? ''));
+
+        if ($syncstate === \local_zendesk\local\constants::STATE_ERROR || $statusraw === 'overdue') {
+            return 'attention';
+        }
+
+        if (in_array($syncstate, [
+            \local_zendesk\local\constants::STATE_PENDINGCREATE,
+            \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
+        ], true)) {
+            return 'draft';
+        }
+
+        switch ($statusraw) {
+            case 'closed':
+            case 'solved':
+                return 'solved';
+
+            case 'pending':
+            case 'hold':
+                return 'pending';
+
+            case 'new':
+            case 'open':
+                return 'open';
+
+            default:
+                return 'neutral';
+        }
     }
 }
