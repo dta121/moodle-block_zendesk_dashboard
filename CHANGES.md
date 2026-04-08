@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Added Active and History tabs with count badges, cleaner empty states, and card-header tab navigation inside the dashboard block
+
 ## 0.2.1
 
 - Refreshed the dashboard block UI with a card-based layout, stronger action hierarchy, status color coding, and a denser responsive ticket grid

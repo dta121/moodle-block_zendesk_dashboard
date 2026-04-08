@@ -97,13 +97,30 @@ final class block_zendesk_dashboard extends block_base {
             return $this->content;
         }
 
-        $requests = $this->decorate_requests($service->get_user_requests($USER->id, $service->get_dashboard_limit()));
+        $displaylimit = $service->get_dashboard_limit();
+        $activerequests = $this->decorate_requests($service->get_user_requests(
+            $USER->id,
+            max(20, $displaylimit * 6),
+            true
+        ));
+        $historyrequests = [];
+        foreach ($this->decorate_requests($service->get_user_requests($USER->id, max(40, $displaylimit * 10))) as $request) {
+            if (!$this->is_active_request($request)) {
+                $historyrequests[] = $request;
+            }
+        }
+
+        $activecount = count($activerequests);
+        $historycount = count($historyrequests);
+        $activerequests = array_slice($activerequests, 0, $displaylimit);
+        $historyrequests = array_slice($historyrequests, 0, $displaylimit);
         $hashelpcenterlink = has_capability('local/zendesk:usehelpcenter', $context)
             && $ssoservice->is_enabled()
             && $ssoservice->is_configured();
+        $tabuid = 'zendesk-dashboard-tabs-' . ($this->instance->id ?? 0);
         $templatecontext = [
             'dashboardintro' => get_string('dashboardintro', 'block_zendesk_dashboard'),
-            'recentrequestslabel' => get_string('recentrequests', 'block_zendesk_dashboard'),
+            'tabuid' => $tabuid,
             'newrequesturl' => (new moodle_url('/local/zendesk/request.php'))->out(false),
             'newrequestlabel' => get_string('newrequest', 'local_zendesk'),
             'hashelpcenterlink' => $hashelpcenterlink,
@@ -111,9 +128,17 @@ final class block_zendesk_dashboard extends block_base {
             'helpcenterlabel' => $ssoservice->get_button_label(),
             'allrequestsurl' => (new moodle_url('/local/zendesk/index.php'))->out(false),
             'allrequestslabel' => get_string('allrequests', 'local_zendesk'),
-            'emptylabel' => get_string('norequests', 'local_zendesk'),
-            'hasrequests' => !empty($requests),
-            'requests' => $requests,
+            'activetablabel' => get_string('activetab', 'block_zendesk_dashboard'),
+            'historytablabel' => get_string('historytab', 'block_zendesk_dashboard'),
+            'activecount' => $activecount,
+            'historycount' => $historycount,
+            'hasactiverequests' => !empty($activerequests),
+            'hashistoryrequests' => !empty($historyrequests),
+            'activerequests' => $activerequests,
+            'historyrequests' => $historyrequests,
+            'noactiverequests' => get_string('noactiverequests', 'block_zendesk_dashboard'),
+            'activeemptyhelp' => get_string('activeemptyhelp', 'block_zendesk_dashboard'),
+            'nohistoryrequests' => get_string('nohistoryrequests', 'block_zendesk_dashboard'),
         ];
 
         $this->content->text = $OUTPUT->render_from_template('block_zendesk_dashboard/content', $templatecontext);
@@ -175,5 +200,27 @@ final class block_zendesk_dashboard extends block_base {
             default:
                 return 'neutral';
         }
+    }
+
+    /**
+     * Determine whether a request belongs in the active tab.
+     *
+     * @param array $request Request display data.
+     * @return bool
+     */
+    private function is_active_request(array $request): bool {
+        $syncstate = strtolower((string) ($request['syncstate'] ?? ''));
+        $statusraw = strtolower((string) ($request['statusraw'] ?? ''));
+
+        if (in_array($syncstate, [
+            \local_zendesk\local\constants::STATE_PENDINGCREATE,
+            \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
+            \local_zendesk\local\constants::STATE_ACTIVE,
+            \local_zendesk\local\constants::STATE_ERROR,
+        ], true)) {
+            return true;
+        }
+
+        return !in_array($statusraw, ['solved', 'closed'], true);
     }
 }

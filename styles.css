@@ -33,7 +33,7 @@
     display: grid;
     gap: 0.75rem;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.4rem;
 }
 
 .block_zendesk_dashboard .block-zendesk-dashboard__action {
@@ -94,7 +94,13 @@
     width: 100%;
 }
 
-.block_zendesk_dashboard .block-zendesk-dashboard__section-head {
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input {
+    left: -9999px;
+    opacity: 0;
+    position: absolute;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tabs-head {
     align-items: center;
     border-top: 1px solid rgba(20, 55, 91, 0.08);
     display: flex;
@@ -104,11 +110,55 @@
     padding-top: 1rem;
 }
 
-.block_zendesk_dashboard .block-zendesk-dashboard__section-title {
-    color: #183046;
-    font-size: 1rem;
+.block_zendesk_dashboard .block-zendesk-dashboard__tabs {
+    align-items: center;
+    display: flex;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab {
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    color: #6b7c8f;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.9rem;
     font-weight: 700;
-    line-height: 1.3;
+    gap: 0.45rem;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0.8rem 0.2rem 0.75rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab:hover {
+    color: #183046;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__count {
+    align-items: center;
+    background: rgba(100, 116, 139, 0.14);
+    border-radius: 999px;
+    color: #475569;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 800;
+    justify-content: center;
+    min-width: 1.6rem;
+    padding: 0.22rem 0.4rem;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--active:checked ~ .block-zendesk-dashboard__tabs-head .block-zendesk-dashboard__tab--active,
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--history:checked ~ .block-zendesk-dashboard__tabs-head .block-zendesk-dashboard__tab--history {
+    border-bottom-color: #0f6cbf;
+    color: #183046;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--active:checked ~ .block-zendesk-dashboard__tabs-head .block-zendesk-dashboard__tab--active .block-zendesk-dashboard__count,
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--history:checked ~ .block-zendesk-dashboard__tabs-head .block-zendesk-dashboard__tab--history .block-zendesk-dashboard__count {
+    background: rgba(15, 108, 191, 0.14);
+    color: #0f6cbf;
 }
 
 .block_zendesk_dashboard .block-zendesk-dashboard__all-link {
@@ -123,6 +173,19 @@
 .block_zendesk_dashboard .block-zendesk-dashboard__all-link:focus {
     color: #0b5aa0;
     text-decoration: underline;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-panels {
+    position: relative;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-panel {
+    display: none;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--active:checked ~ .block-zendesk-dashboard__tab-panels .block-zendesk-dashboard__tab-panel--active,
+.block_zendesk_dashboard .block-zendesk-dashboard__tab-input--history:checked ~ .block-zendesk-dashboard__tab-panels .block-zendesk-dashboard__tab-panel--history {
+    display: block;
 }
 
 .block_zendesk_dashboard .block-zendesk-dashboard__list {
@@ -225,6 +288,44 @@
     padding: 1rem;
 }
 
+.block_zendesk_dashboard .block-zendesk-dashboard__empty--celebratory {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__empty-title {
+    color: #183046;
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__empty-copy {
+    color: #64748b;
+    font-size: 0.84rem;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__empty-link {
+    align-items: center;
+    background: #0f6cbf;
+    border-radius: 0.8rem;
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 0.84rem;
+    font-weight: 700;
+    justify-content: center;
+    min-height: 2.4rem;
+    padding: 0.65rem 0.95rem;
+    text-decoration: none;
+    width: fit-content;
+}
+
+.block_zendesk_dashboard .block-zendesk-dashboard__empty-link:hover,
+.block_zendesk_dashboard .block-zendesk-dashboard__empty-link:focus {
+    background: #0b5aa0;
+    color: #ffffff;
+    text-decoration: none;
+}
+
 @media (min-width: 48rem) {
     .block_zendesk_dashboard .block-zendesk-dashboard__list {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -233,9 +334,18 @@
 
 @media (max-width: 30rem) {
     .block_zendesk_dashboard .block-zendesk-dashboard__ticket-head,
-    .block_zendesk_dashboard .block-zendesk-dashboard__section-head {
+    .block_zendesk_dashboard .block-zendesk-dashboard__tabs-head {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .block_zendesk_dashboard .block-zendesk-dashboard__tabs {
+        width: 100%;
+    }
+
+    .block_zendesk_dashboard .block-zendesk-dashboard__tab {
+        justify-content: space-between;
+        width: 100%;
     }
 
     .block_zendesk_dashboard .block-zendesk-dashboard__status {

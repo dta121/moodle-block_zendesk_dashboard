@@ -25,6 +25,10 @@
 $string['pluginname'] = 'Zendesk support dashboard';
 $string['zendesk_dashboard:addinstance'] = 'Add a Zendesk support dashboard block';
 $string['zendesk_dashboard:myaddinstance'] = 'Add a Zendesk support dashboard block to the Dashboard';
+$string['activeemptyhelp'] = 'Everything is caught up. Create a new request if you need help.';
+$string['activetab'] = 'Active';
 $string['dashboardintro'] = 'Create a new request or review your latest support updates.';
+$string['historytab'] = 'History';
+$string['noactiverequests'] = 'No active requests';
+$string['nohistoryrequests'] = 'No resolved or closed requests yet.';
 $string['privacy:metadata'] = 'The Zendesk support dashboard block does not store personal data. It only displays request data already managed by the local_zendesk plugin.';
-$string['recentrequests'] = 'Recent requests';

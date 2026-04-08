@@ -34,30 +34,73 @@
             {{/hashelpcenterlink}}
         </div>
 
-        <div class="block-zendesk-dashboard__section-head">
-            <div class="block-zendesk-dashboard__section-title">{{recentrequestslabel}}</div>
+        <input class="block-zendesk-dashboard__tab-input block-zendesk-dashboard__tab-input--active" type="radio" name="{{tabuid}}" id="{{tabuid}}-active" checked>
+        <input class="block-zendesk-dashboard__tab-input block-zendesk-dashboard__tab-input--history" type="radio" name="{{tabuid}}" id="{{tabuid}}-history">
+
+        <div class="block-zendesk-dashboard__tabs-head">
+            <div class="block-zendesk-dashboard__tabs">
+                <label class="block-zendesk-dashboard__tab block-zendesk-dashboard__tab--active" for="{{tabuid}}-active">
+                    <span>{{activetablabel}}</span>
+                    <span class="block-zendesk-dashboard__count">{{activecount}}</span>
+                </label>
+                <label class="block-zendesk-dashboard__tab block-zendesk-dashboard__tab--history" for="{{tabuid}}-history">
+                    <span>{{historytablabel}}</span>
+                    <span class="block-zendesk-dashboard__count">{{historycount}}</span>
+                </label>
+            </div>
             <a class="block-zendesk-dashboard__all-link" href="{{allrequestsurl}}">{{allrequestslabel}}</a>
         </div>
 
-        {{#hasrequests}}
-        <div class="block-zendesk-dashboard__list">
-            {{#requests}}
-            <article class="block-zendesk-dashboard__ticket">
-                <div class="block-zendesk-dashboard__ticket-head">
-                    <a class="block-zendesk-dashboard__ticket-title" href="{{viewurl}}">{{subject}}</a>
-                    <span class="{{statuspillclass}}">{{statuslabel}}</span>
+        <div class="block-zendesk-dashboard__tab-panels">
+            <section class="block-zendesk-dashboard__tab-panel block-zendesk-dashboard__tab-panel--active">
+                {{#hasactiverequests}}
+                <div class="block-zendesk-dashboard__list">
+                    {{#activerequests}}
+                    <article class="block-zendesk-dashboard__ticket">
+                        <div class="block-zendesk-dashboard__ticket-head">
+                            <a class="block-zendesk-dashboard__ticket-title" href="{{viewurl}}">{{subject}}</a>
+                            <span class="{{statuspillclass}}">{{statuslabel}}</span>
+                        </div>
+                        {{#hascourse}}
+                        <div class="block-zendesk-dashboard__ticket-context">{{coursefullname}}</div>
+                        {{/hascourse}}
+                        <div class="block-zendesk-dashboard__ticket-meta">{{timemodifiedhuman}}</div>
+                    </article>
+                    {{/activerequests}}
                 </div>
-                {{#hascourse}}
-                <div class="block-zendesk-dashboard__ticket-context">{{coursefullname}}</div>
-                {{/hascourse}}
-                <div class="block-zendesk-dashboard__ticket-meta">{{timemodifiedhuman}}</div>
-            </article>
-            {{/requests}}
-        </div>
-        {{/hasrequests}}
+                {{/hasactiverequests}}
 
-        {{^hasrequests}}
-        <div class="block-zendesk-dashboard__empty">{{emptylabel}}</div>
-        {{/hasrequests}}
+                {{^hasactiverequests}}
+                <div class="block-zendesk-dashboard__empty block-zendesk-dashboard__empty--celebratory">
+                    <div class="block-zendesk-dashboard__empty-title">{{noactiverequests}}</div>
+                    <div class="block-zendesk-dashboard__empty-copy">{{activeemptyhelp}}</div>
+                    <a class="block-zendesk-dashboard__empty-link" href="{{newrequesturl}}">{{newrequestlabel}}</a>
+                </div>
+                {{/hasactiverequests}}
+            </section>
+
+            <section class="block-zendesk-dashboard__tab-panel block-zendesk-dashboard__tab-panel--history">
+                {{#hashistoryrequests}}
+                <div class="block-zendesk-dashboard__list">
+                    {{#historyrequests}}
+                    <article class="block-zendesk-dashboard__ticket">
+                        <div class="block-zendesk-dashboard__ticket-head">
+                            <a class="block-zendesk-dashboard__ticket-title" href="{{viewurl}}">{{subject}}</a>
+                            <span class="{{statuspillclass}}">{{statuslabel}}</span>
+                        </div>
+                        {{#hascourse}}
+                        <div class="block-zendesk-dashboard__ticket-context">{{coursefullname}}</div>
+                        {{/hascourse}}
+                        <div class="block-zendesk-dashboard__ticket-meta">{{timemodifiedhuman}}</div>
+                    </article>
+                    {{/historyrequests}}
+                </div>
+                {{/hashistoryrequests}}
+
+                {{^hashistoryrequests}}
+                <div class="block-zendesk-dashboard__empty">{{nohistoryrequests}}</div>
+                {{/hashistoryrequests}}
+            </section>
+        </div>
     </div>
 </div>
