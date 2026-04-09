@@ -24,14 +24,13 @@
 
 namespace block_zendesk_dashboard;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Tests for the dashboard block privacy provider.
  *
  * @package    block_zendesk_dashboard
  * @copyright  2026 David Ta <david.ta@saylor.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers     \block_zendesk_dashboard\privacy\provider
  */
 final class privacy_provider_test extends \advanced_testcase {
     /**

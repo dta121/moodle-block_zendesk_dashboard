@@ -24,8 +24,6 @@
 
 namespace block_zendesk_dashboard\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy subsystem implementation for block_zendesk_dashboard.
  *

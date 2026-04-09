@@ -1,6 +1,51 @@
 {{!
   This file is part of Moodle - http://moodle.org/
 
+  @template block_zendesk_dashboard/content
+
+  Example context (json):
+  {
+    "dashboardintro": "Create a new request or review your latest support updates.",
+    "newrequesturl": "#",
+    "newrequestlabel": "New request",
+    "hashelpcenterlink": true,
+    "helpcenterurl": "#",
+    "helpcenterlabel": "Open Help Center",
+    "tabuid": "zendesk-tabs-demo",
+    "activetablabel": "Active",
+    "activecount": 2,
+    "historytablabel": "History",
+    "historycount": 4,
+    "allrequestsurl": "#",
+    "allrequestslabel": "All requests",
+    "hasactiverequests": true,
+    "activerequests": [
+      {
+        "viewurl": "#",
+        "subject": "Testing Plugin for Moodle",
+        "statuspillclass": "block-zendesk-dashboard__status-pill block-zendesk-dashboard__status-pill--open",
+        "statuslabel": "Open",
+        "hascourse": true,
+        "coursefullname": "Student Success 101",
+        "timemodifiedhuman": "Updated 2 hours ago"
+      }
+    ],
+    "hashistoryrequests": true,
+    "historyrequests": [
+      {
+        "viewurl": "#",
+        "subject": "Resolved sign-in issue",
+        "statuspillclass": "block-zendesk-dashboard__status-pill block-zendesk-dashboard__status-pill--solved",
+        "statuslabel": "Solved",
+        "hascourse": false,
+        "timemodifiedhuman": "Updated yesterday"
+      }
+    ],
+    "noactiverequests": "No active requests",
+    "activeemptyhelp": "Everything is caught up. Create a new request if you need help.",
+    "nohistoryrequests": "No resolved or closed requests yet."
+  }
+
   @package block_zendesk_dashboard
   @copyright 2026 David Ta <david.ta@saylor.org>
   @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
