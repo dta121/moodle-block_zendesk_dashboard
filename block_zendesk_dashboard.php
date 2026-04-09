@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Dashboard block for Moodle-managed Zendesk requests.
  *
@@ -177,10 +175,12 @@ final class block_zendesk_dashboard extends block_base {
             return 'attention';
         }
 
-        if (in_array($syncstate, [
-            \local_zendesk\local\constants::STATE_PENDINGCREATE,
-            \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
-        ], true)) {
+        if (
+            in_array($syncstate, [
+                \local_zendesk\local\constants::STATE_PENDINGCREATE,
+                \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
+            ], true)
+        ) {
             return 'draft';
         }
 
@@ -212,12 +212,14 @@ final class block_zendesk_dashboard extends block_base {
         $syncstate = strtolower((string) ($request['syncstate'] ?? ''));
         $statusraw = strtolower((string) ($request['statusraw'] ?? ''));
 
-        if (in_array($syncstate, [
-            \local_zendesk\local\constants::STATE_PENDINGCREATE,
-            \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
-            \local_zendesk\local\constants::STATE_ACTIVE,
-            \local_zendesk\local\constants::STATE_ERROR,
-        ], true)) {
+        if (
+            in_array($syncstate, [
+                \local_zendesk\local\constants::STATE_PENDINGCREATE,
+                \local_zendesk\local\constants::STATE_CONFIRMINGCREATE,
+                \local_zendesk\local\constants::STATE_ACTIVE,
+                \local_zendesk\local\constants::STATE_ERROR,
+            ], true)
+        ) {
             return true;
         }
 
