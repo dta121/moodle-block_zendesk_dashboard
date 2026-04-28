@@ -25,11 +25,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_zendesk_dashboard';
-$plugin->version = 2026042700;
+$plugin->version = 2026042800;
 $plugin->requires = 2024100700;
 $plugin->supported = [405, 405];
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.3.0';
+$plugin->release = '0.3.1';
 $plugin->dependencies = [
     'local_zendesk' => 2026042712,
 ];
