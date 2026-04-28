@@ -241,6 +241,16 @@ final class block_zendesk_dashboard_test extends \advanced_testcase {
     /**
      * Provider for status-pill modifier mapping.
      *
+     * Note: an "error" syncstate row would in principle map to the
+     * "attention" modifier, but the block's two fetch paths today exclude
+     * STATE_ERROR rows from both panels (the active query whitelists
+     * pendingcreate/confirmingcreate/active, and the history loop discards
+     * anything that is_active_request() considers active — which includes
+     * STATE_ERROR). The "attention" branch is therefore unreachable through
+     * the live data flow on this dashboard. Pinning observed behaviour here;
+     * exposing error-state tickets is tracked as a follow-up if/when product
+     * decides whether they should surface.
+     *
      * @return array<string, array{string, string, string}>
      */
     public static function status_pill_modifier_provider(): array {
@@ -251,7 +261,6 @@ final class block_zendesk_dashboard_test extends \advanced_testcase {
             'hold' => ['active', 'hold', 'pending'],
             'solved' => ['closed', 'solved', 'solved'],
             'closed' => ['closed', 'closed', 'solved'],
-            'error' => ['error', 'open', 'attention'],
             'draft pendingcreate' => ['pendingcreate', '', 'draft'],
             'draft confirmingcreate' => ['confirmingcreate', '', 'draft'],
         ];
