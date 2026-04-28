@@ -24,6 +24,11 @@
 
 namespace block_zendesk_dashboard;
 
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+require_once($CFG->dirroot . '/blocks/zendesk_dashboard/block_zendesk_dashboard.php');
+
 /**
  * Tests for the dashboard block's public surface and the request-bucket
  * branching that drives status pills and active-vs-history routing
@@ -364,15 +369,23 @@ final class block_zendesk_dashboard_test extends \advanced_testcase {
         global $DB;
 
         $now = time();
-        $usermapid = (int) $DB->insert_record('local_zendesk_usermap', (object) [
-            'userid' => $userid,
-            'zendesk_user_id' => 100000 + $userid,
-            'zendesk_external_id' => 'mdl:aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee:user:' . $userid,
-            'zendesk_email' => 'mapped' . $userid . '@example.com',
-            'lastsyncedat' => $now,
-            'timecreated' => $now,
-            'timemodified' => $now,
-        ], true, false, true);
+        // Reuse the per-user mapping when one already exists in this test run;
+        // the unique index on usermap.userid would otherwise fail when a
+        // single test seeds more than one ticket for the same user.
+        $existing = $DB->get_record('local_zendesk_usermap', ['userid' => $userid]);
+        if ($existing) {
+            $usermapid = (int) $existing->id;
+        } else {
+            $usermapid = (int) $DB->insert_record('local_zendesk_usermap', (object) [
+                'userid' => $userid,
+                'zendesk_user_id' => 100000 + $userid,
+                'zendesk_external_id' => 'mdl:aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee:user:' . $userid,
+                'zendesk_email' => 'mapped' . $userid . '@example.com',
+                'lastsyncedat' => $now,
+                'timecreated' => $now,
+                'timemodified' => $now,
+            ]);
+        }
 
         // Use a tiny per-call counter so each ticket has a strictly increasing
         // timecreated, which the user-tickets query orders by DESC.
