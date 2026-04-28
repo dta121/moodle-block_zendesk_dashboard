@@ -24,11 +24,6 @@
 
 namespace block_zendesk_dashboard;
 
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
-require_once($CFG->dirroot . '/blocks/zendesk_dashboard/block_zendesk_dashboard.php');
-
 /**
  * Tests for the dashboard block's public surface and the request-bucket
  * branching that drives status pills and active-vs-history routing
@@ -52,8 +47,15 @@ final class block_zendesk_dashboard_test extends \advanced_testcase {
      * @return void
      */
     protected function setUp(): void {
+        global $CFG;
         parent::setUp();
         $this->resetAfterTest();
+        // Block classes are not autoloaded; load the block_base parent first
+        // (already part of Moodle's bootstrap by the time setUp runs) and
+        // then the block class file. Doing this at file level fails when
+        // PHPUnit loads the test class before Moodle finishes bootstrapping.
+        require_once($CFG->libdir . '/blocklib.php');
+        require_once($CFG->dirroot . '/blocks/zendesk_dashboard/block_zendesk_dashboard.php');
         // The local_zendesk install hook normally seeds this; tests reset
         // config so we re-seed explicitly to mirror a real install.
         set_config('instanceuuid', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'local_zendesk');
