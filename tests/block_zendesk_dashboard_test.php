@@ -50,11 +50,13 @@ final class block_zendesk_dashboard_test extends \advanced_testcase {
         global $CFG;
         parent::setUp();
         $this->resetAfterTest();
-        // Block classes are not autoloaded; load the block_base parent first
-        // (already part of Moodle's bootstrap by the time setUp runs) and
-        // then the block class file. Doing this at file level fails when
-        // PHPUnit loads the test class before Moodle finishes bootstrapping.
-        require_once($CFG->libdir . '/blocklib.php');
+        // Block classes are not autoloaded. Pull in block_base (which lives
+        // in blocks/moodleblock.class.php, not lib/blocklib.php) and then
+        // load the dashboard block class on top. Doing this at file level
+        // fails when PHPUnit loads the test class before Moodle finishes
+        // bootstrapping; setUp runs after parent::setUp() so the dependencies
+        // are guaranteed to be available here.
+        require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
         require_once($CFG->dirroot . '/blocks/zendesk_dashboard/block_zendesk_dashboard.php');
         // The local_zendesk install hook normally seeds this; tests reset
         // config so we re-seed explicitly to mirror a real install.
